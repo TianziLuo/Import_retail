@@ -38,33 +38,37 @@ def Category_data(df):
     # Convert to DataFrame
     Category_data = pd.DataFrame(list(zip(*Category_data)))
     return Category_data
-   
+
+## MenuItems_data
+def MenuItems_data(df):
+    ## name	upc	Abbreviation	item_type	bottle_deposit_id	bg_color	is_discountable	is_ebt	is_taxfree	is_check_id	Description	sort	status	en	cn
+    MenuItems_data = [df['Item_En'],  ## name
+                     df['UPC/Barcode'],  ## upc
+                     [None] * len(df['Item_En']),  #### Abbreviation
+                     df['Item_type'], ## item_type
+                     [None] * len(df['Item_En']), ## bottle_deposite
+                     ['#FFFFFF'] * len(df['Item_En']), ## bg_color
+                     [1] * len(df['Item_En']), ## is_discountable
+                     [0] * len(df['Item_En']), ## is_ebt
+                     [0] * len(df['Item_En']), ## is_taxfree
+                     [0] * len(df['Item_En']), ## is_check_id
+                     [None] * len(df['Item_En']), ## Description
+                     df['Item_ID'], ## sort
+                     [1] * len(df['Item_En']), ## status
+                    df['Item_En'],
+                    df['Item_Cn'],]
+    # Convert to DataFrame
+    MenuItems_data = pd.DataFrame(list(zip(*MenuItems_data)))
+    return MenuItems_data
+
 # Read the Excel file
 file_path = r"C:\Users\tianz\OneDrive\桌面\retail.xlsx"
 df = pd.read_excel(file_path, engine='openpyxl')
 # Call function
-result1 = Department_data(df)
-result2 = Category_data(df)
-print(result1,result2)
+result3 = MenuItems_data(df)
+print(result3)
 
 '''
-## MenuItems_data
-def MenuItems_data(df):
-    MenuItems_data = df.iloc[:, [7,9,10,6,6,7,8]]
-    columns_to_insert = {
-        'FontColor': pd.Series(['#FFFFFF'] * len(df), index=df.index),
-        'BackgroundColor': pd.Series(['#355d6e'] * len(df), index=df.index),
-        'OneCol1': pd.Series([1] * len(df), index=df.index),
-        'OneCol2': pd.Series([1] * len(df), index=df.index)
-    }
-
-    insert_index = 4
-    for col_name, col_data in columns_to_insert.items():
-        MenuItems_data.insert(insert_index, col_name, col_data)
-        insert_index += 1
-
-    return MenuItems_data
-
 ## CategoryToItem_data
 def CatalogyToItem_data(df):
     CatalogyToItem_data = df.iloc[:, [3,6,6]]
