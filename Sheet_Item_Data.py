@@ -20,8 +20,8 @@ def Department_data(df):
 def Category_data(df):
     filter_condition = df['Cate_En'].notna()
     filtered_data = df[filter_condition]
-    print(filtered_data)
 
+    department_id = filtered_data['Department_ID']
     unique_Category_En = filtered_data['Cate_En']
     unique_Category_Cn = filtered_data['Cate_Cn']
     unique_Category_ID = filtered_data['Cate_ID']
@@ -30,14 +30,15 @@ def Category_data(df):
     unique_Category_is_tax_free = unique_Category_is_tax_free.fillna(0)
 
     ## department_id	name	is_tax_free	font_color	bg_color	font_size	font_weight	sort	status	en	cn
-    Category_data = [list(unique_Category_ID),  ## ID
+    Category_data = [list(department_id),  ## department_id
                      list(unique_Category_En),  ## Name
                      list(unique_Category_is_tax_free), ## is_tax_free
                      ['#00000'] * len(unique_Category_En), ## font_color
                      ['#FFFFFF'] * len(unique_Category_En), ## bg_color
                      [None] * len(unique_Category_En), ## font_size
                      [None] * len(unique_Category_En), ## font_weight sort
-                     [1] * len(unique_Category_En),     # One row/ status
+                     list(unique_Category_ID),   ## sort
+                     [1] * len(unique_Category_En),    ## One row/ status
                     list(unique_Category_En),
                     list(unique_Category_Cn)]
     # Convert to DataFrame
@@ -53,7 +54,7 @@ def MenuItems_data(df):
                      df['UPC/Barcode'],  ## upc
                      [None] * len(df['Item_En']),  #### Abbreviation
                      df['Item_Type'], ## item_type
-                     [None] * len(df['Item_En']), ## bottle_deposite
+                     [0] * len(df['Item_En']), ## bottle_deposite
                      ['#FFFFFF'] * len(df['Item_En']), ## bg_color
                      [1] * len(df['Item_En']), ## is_discountable
                      [0] * len(df['Item_En']), ## is_ebt
@@ -68,14 +69,14 @@ def MenuItems_data(df):
     MenuItems_data = pd.DataFrame(list(zip(*MenuItems_data)))
     return MenuItems_data
 
-
-# Read the Excel file
-file_path =  r"C:\Users\UPCA02\Desktop\retail.xlsx"
-df = pd.read_excel(file_path, engine='openpyxl')
-# Call function
-result1 = Department_data(df)
-result2 = MenuItems_data(df)
-result3 = Category_data(df)
-print(result1)
-print(result2)
-print(result3)
+if __name__ == "__main__":
+    # Read the Excel file
+    file_path =  r"C:\Users\UPCA02\Desktop\retail.xlsx"
+    df = pd.read_excel(file_path, engine='openpyxl')
+    # Call function
+    result1 = Department_data(df)
+    result2 = MenuItems_data(df)
+    result3 = Category_data(df)
+    print(result1)
+    print(result2)
+    print(result3)
