@@ -45,3 +45,12 @@ with pd.ExcelWriter(save_excel_file(), engine='openpyxl') as writer:
         # Delete the first row (header)
         worksheet.delete_rows(1)
 
+#necessary sql syntax  
+tax = input("Enter tax rate: ")
+
+with open(file_path_necessary, 'w', encoding='utf-8') as f:
+    f.write(
+            f"INSERT INTO `userve_retail`.`setting_tax` (`id`, `name`, `value`, `is_default`) VALUES ('1', 'tax', '{tax}', '1');\n"
+            "INSERT INTO `userve_retail`.`users` (`id`, `name`, `pin`) VALUES ('1', 'owner', '1');"
+            )
+
