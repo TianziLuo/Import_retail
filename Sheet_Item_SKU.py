@@ -4,6 +4,10 @@ import pandas as pd
 def Item_SKU_data(df):
     cost_copy = df['Cost'].copy()
     cost = cost_copy.fillna(0)
+
+    stock_copy = df['Item_Stock'].copy()
+    stock = stock_copy.fillna(0)
+
     ## Key	item_id	barcode	sku_name	sku_code	sku_price	Sku_cost	is_stock	sku_stock	sort	status
     Item_SKU_data = [[None] * len(df['Item_En']),  ## Key
                         df['Item_ID'],             ## item_ID
@@ -13,7 +17,7 @@ def Item_SKU_data(df):
                         df['Price'],               ## sku_price
                         list(cost),                ## sku_cost
                         [1] * len(df['Item_ID']),  ## is_stock
-                        df['Item_Stock'],          ## sku_stock
+                        list(stock),               ## sku_stock
                         df['Item_ID'],             ## sort
                         [1] * len(df['Item_ID'])]  ##status
 
@@ -34,6 +38,7 @@ def ItemToTax_data(df):
         df['Item_ID'],
         [1] * len(df['Item_ID']),
         df['Item_ID']]
+    
     ItemToTax_data = pd.DataFrame(list(zip(*ItemToTax_data)))
     return ItemToTax_data 
 
